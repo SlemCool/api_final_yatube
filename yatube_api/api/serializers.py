@@ -11,6 +11,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    following = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = Follow
         fields = (
