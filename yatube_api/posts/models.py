@@ -70,4 +70,4 @@ class Follow(models.Model):
         ]
 
     def __str__(self):
-        return f'Связь: автор-{self.following}: подписчик-{self.user}'
+        return self.following

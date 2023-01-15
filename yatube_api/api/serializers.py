@@ -11,7 +11,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    following = serializers.StringRelatedField(many=True, read_only=True)
+    user = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+    following = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+
     class Meta:
         model = Follow
         fields = (
@@ -36,3 +42,4 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Comment
+        read_only_fields = ('post',)
