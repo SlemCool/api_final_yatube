@@ -2,7 +2,7 @@ from rest_framework import filters, permissions, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
 
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsAuthor
 from api.serializers import (
     CommentSerializer,
     FollowSerializer,
@@ -13,7 +13,10 @@ from posts.models import Group, Post
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = [
+        IsAuthor,
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = LimitOffsetPagination
@@ -28,7 +31,7 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class FollowViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly, permissions.IsAuthenticated]
+    permission_classes = [IsAuthor, permissions.IsAuthenticated]
 
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter,)
@@ -43,7 +46,10 @@ class FollowViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = [
+        IsAuthor,
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
     serializer_class = CommentSerializer
 
     def get_queryset(self):
